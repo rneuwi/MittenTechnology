@@ -1,0 +1,57 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Inject config from repository secrets
+        env:
+          EMAILJS_PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
+          EMAILJS_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
+          EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
+          RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
+        run: |
+          for name in EMAILJS_PUBLIC_KEY EMAILJS_SERVICE_ID EMAILJS_TEMPLATE_ID RECAPTCHA_SITE_KEY; do
+            if [ -z "${!name}" ]; then
+              echo "::warning::Secret $name is not set; the contact form will show the email fallback."
+            fi
+          done
+          sed -i \
+            -e "s|__EMAILJS_PUBLIC_KEY__|${EMAILJS_PUBLIC_KEY}|" \
+            -e "s|__EMAILJS_SERVICE_ID__|${EMAILJS_SERVICE_ID}|" \
+            -e "s|__EMAILJS_TEMPLATE_ID__|${EMAILJS_TEMPLATE_ID}|" \
+            -e "s|__RECAPTCHA_SITE_KEY__|${RECAPTCHA_SITE_KEY}|" \
+            js/config.js
+
+      - name: Assemble site
+        run: |
+          mkdir _site
+          cp -r index.html css js assets _site/
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
