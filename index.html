@@ -199,51 +199,16 @@
           </dl>
         </div>
 
-        <form class="contact-form reveal" id="contact-form" aria-labelledby="contact-heading" novalidate>
-          <p class="form-note">All fields are required unless marked optional.</p>
-          <div class="field-row">
-            <div class="field">
-              <label for="cf-name">Name</label>
-              <input id="cf-name" type="text" name="from_name" autocomplete="name" required maxlength="100" aria-describedby="cf-name-error">
-              <p class="field-error" id="cf-name-error" hidden>Please enter your name.</p>
-            </div>
-            <div class="field">
-              <label for="cf-email">Email</label>
-              <input id="cf-email" type="email" name="reply_to" autocomplete="email" required maxlength="150" aria-describedby="cf-email-error">
-              <p class="field-error" id="cf-email-error" hidden>Please enter a valid email address, like name@example.com.</p>
-            </div>
-          </div>
-          <div class="field">
-            <label for="cf-company">Company <span class="optional">(optional)</span></label>
-            <input id="cf-company" type="text" name="company" autocomplete="organization" maxlength="150">
-          </div>
-          <div class="field">
-            <label for="cf-message">How can we help?</label>
-            <textarea id="cf-message" name="message" rows="5" required maxlength="4000" aria-describedby="cf-message-error"></textarea>
-            <p class="field-error" id="cf-message-error" hidden>Please tell us a little about what you need.</p>
-          </div>
-
-          <!-- Honeypot: hidden from people and assistive tech, bots tend to fill it -->
-          <div class="hp" aria-hidden="true">
-            <label for="cf-website">Website</label>
-            <input id="cf-website" type="text" name="website" tabindex="-1" autocomplete="off">
-          </div>
-
-          <div class="captcha" id="captcha"></div>
-
-          <button type="submit" class="btn btn-full">Send message</button>
-          <p class="form-status" role="status" aria-live="polite"></p>
-
-          <p class="form-legal">
-            We only use what you send to reply to you. See our <a href="privacy.html">Privacy Policy</a>.
-            This form is protected by reCAPTCHA, and the Google
-            <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Privacy Policy<span class="visually-hidden"> (opens in a new tab)</span></a> and
-            <a href="https://policies.google.com/terms" rel="noopener" target="_blank">Terms of Service<span class="visually-hidden"> (opens in a new tab)</span></a> apply.
-          </p>
-          <noscript>
-            <p class="form-status is-error">The contact form needs JavaScript. You can email us at <a href="mailto:rneuwirth@mittentechnologyllc.com">rneuwirth@mittentechnologyllc.com</a>.</p>
-          </noscript>
-        </form>
+        <div class="card contact-panel reveal">
+          <h3>Start a conversation</h3>
+          <p>A short email is all it takes. It helps to include:</p>
+          <ul>
+            <li>What you're building, fixing, or planning</li>
+            <li>Your timeline, even a rough one</li>
+            <li>The best way and time to reach you</li>
+          </ul>
+          <a class="btn btn-full" href="mailto:rneuwirth@mittentechnologyllc.com?subject=Project%20inquiry">Email us</a>
+        </div>
       </div>
     </section>
   </main>
@@ -263,8 +228,6 @@
     </div>
   </footer>
 
-  <script src="js/config.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4.4.1/dist/email.min.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
