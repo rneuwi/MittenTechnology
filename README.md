@@ -41,7 +41,7 @@ To test the real form locally, temporarily put your values in `js/config.js` and
 
 ### 1. reCAPTCHA v2
 1. Go to https://www.google.com/recaptcha/admin and create a site with type **reCAPTCHA v2, "I'm not a robot" checkbox**.
-2. Domains: `<your-username>.github.io` and `localhost`.
+2. Domains: `mittentechnologyllc.com`, `www.mittentechnologyllc.com`, and `localhost`.
 3. Keep the **site key** (public) and **secret key** (goes to EmailJS only).
 
 ### 2. EmailJS
@@ -51,7 +51,7 @@ To test the real form locally, temporarily put your values in `js/config.js` and
    - Suggested: Subject `New inquiry from {{from_name}}`, Reply-To `{{reply_to}}`.
 3. In the template's **Settings** tab, turn on **Enable reCAPTCHA V2 verification** and paste the reCAPTCHA **secret key**. EmailJS then rejects any send without a valid captcha, so bots can't skip it.
 4. Note the Template ID, and your **Public Key** under Account > General.
-5. Account > Security: add `<your-username>.github.io` to the allowed origins, and consider turning on the rate limit.
+5. Account > Security: add `https://mittentechnologyllc.com` and `https://www.mittentechnologyllc.com` to the allowed origins, and consider turning on the rate limit.
 
 ### 3. GitHub
 1. Create the repo and push to `main`.
@@ -61,7 +61,7 @@ To test the real form locally, temporarily put your values in `js/config.js` and
    - `EMAILJS_TEMPLATE_ID`
    - `RECAPTCHA_SITE_KEY`
 3. Settings > Pages > Source: **GitHub Actions**.
-4. Push (or run the workflow manually). The site deploys to `https://<your-username>.github.io/<repo>/`.
+4. Push (or run the workflow manually). The site deploys to `https://mittentechnologyllc.com/`.
 
 Note: the EmailJS public key and reCAPTCHA site key end up visible in the deployed JS. They're designed to be public. Protection comes from the allowed-origins setting and server-side captcha checks, and keeping them out of the repo means they aren't stored in git history.
 
@@ -71,8 +71,11 @@ Note: the EmailJS public key and reCAPTCHA site key end up visible in the deploy
 - Minimum 3 seconds on the page before a submit is accepted
 - EmailJS allowed origins and rate limit (dashboard settings)
 
-## TODO once the domain is purchased
-- [ ] Replace `hello@mittentechnology.com` everywhere it appears (`index.html`, `privacy.html`, `terms.html`, `accessibility.html`, `js/config.js`) with the real address
-- [ ] Add a `CNAME` file with the domain and set the custom domain in Pages settings
-- [ ] Make `og:image` an absolute URL (`https://yourdomain/assets/og-image.jpg`) so link previews work
-- [ ] Add the domain to the reCAPTCHA and EmailJS allowed origins
+## Custom domain: mittentechnologyllc.com
+Because the site deploys through GitHub Actions, a `CNAME` file isn't used; the domain is set in the repo settings instead.
+
+- [ ] Settings > Pages > Custom domain: `mittentechnologyllc.com`, then check **Enforce HTTPS** once the certificate is issued
+- [ ] DNS at the registrar: `A` records for `@` pointing to `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`, and a `CNAME` for `www` pointing to `<your-username>.github.io`
+- [ ] (Recommended) Verify the domain under your GitHub account's Settings > Pages to prevent takeover
+- [ ] Set up the `hello@mittentechnologyllc.com` mailbox (or forwarding) with your email provider, including its MX records
+- [ ] Add the domain to the reCAPTCHA domains and EmailJS allowed origins

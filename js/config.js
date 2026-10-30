@@ -5,5 +5,5 @@ window.MITTEN_CONFIG = {
   emailjsServiceId: '__EMAILJS_SERVICE_ID__',
   emailjsTemplateId: '__EMAILJS_TEMPLATE_ID__',
   recaptchaSiteKey: '__RECAPTCHA_SITE_KEY__',
-  contactEmail: 'hello@mittentechnology.com'
+  contactEmail: 'hello@mittentechnologyllc.com'
 };
