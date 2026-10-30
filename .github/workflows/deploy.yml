@@ -45,7 +45,7 @@ jobs:
       - name: Assemble site
         run: |
           mkdir _site
-          cp -r index.html css js assets _site/
+          cp -r *.html css js assets _site/
 
       - uses: actions/configure-pages@v6
 

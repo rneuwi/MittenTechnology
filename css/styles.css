@@ -1,3 +1,19 @@
+/* Self-hosted fonts (SIL Open Font License), so visitors' browsers never contact Google Fonts */
+@font-face {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 500 800;
+  font-display: swap;
+  src: url('../assets/fonts/exo2-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('../assets/fonts/inter-latin.woff2') format('woff2');
+}
+
 :root {
   --bg: #050B18;
   --bg-alt: #081120;
@@ -10,7 +26,11 @@
   --accent: #2E9BFF;
   --accent-1: #0A84FF;
   --accent-2: #1E5BFF;
-  --gradient: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  /* Gradient starts darker than --accent-1 so white button text stays above 4.5:1 (WCAG AA) */
+  --btn-start: #0A6EE0;
+  --gradient: linear-gradient(135deg, var(--btn-start), var(--accent-2));
+  /* Form control edges need 3:1 against the background (WCAG 1.4.11) */
+  --input-border: #4F6A99;
   --danger: #FF6B7A;
   --success: #3DDC97;
 
@@ -59,6 +79,7 @@ p { margin: 0 0 1em; }
   outline-offset: 3px;
   border-radius: 4px;
 }
+main:focus { outline: none; }
 
 .container {
   width: 100%;
@@ -227,6 +248,7 @@ p { margin: 0 0 1em; }
   pointer-events: none;
 }
 .hero-inner { position: relative; z-index: 1; }
+.hero-title { margin: 0; }
 
 .hero-logo {
   width: min(720px, 100%);
@@ -474,18 +496,18 @@ p { margin: 0 0 1em; }
   display: block;
   margin-bottom: 18px;
 }
-.field span {
+.field label {
   display: block;
   margin-bottom: 6px;
   font-size: .9rem;
   font-weight: 500;
 }
-.field em { color: var(--muted); font-style: normal; font-weight: 400; }
+.field .optional { color: var(--muted); font-weight: 400; }
 .field input, .field textarea {
   width: 100%;
   padding: 12px 14px;
   background: var(--bg);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--input-border);
   border-radius: 10px;
   color: var(--text);
   font: inherit;
@@ -498,7 +520,29 @@ p { margin: 0 0 1em; }
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(46, 155, 255, .2);
 }
-.field.has-error input, .field.has-error textarea { border-color: var(--danger); }
+.field.has-error input, .field.has-error textarea { border-color: var(--danger); border-width: 2px; }
+.field-error {
+  margin: 6px 0 0;
+  color: var(--danger);
+  font-size: .875rem;
+}
+.field-error::before { content: '\26A0\FE0E  '; }
+.field-error[hidden] { display: none; }
+
+.form-note {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: .875rem;
+}
+.form-legal {
+  margin: 18px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: .8rem;
+  line-height: 1.55;
+}
+.form-legal a { text-decoration: underline; }
 
 .hp {
   position: absolute;
@@ -532,14 +576,62 @@ p { margin: 0 0 1em; }
 }
 .site-footer .brand img { width: 32px; }
 .site-footer p { margin: 0; color: var(--muted); font-size: .9rem; }
-
-/* ---------- Reveal ---------- */
-.reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity .6s ease, transform .6s ease;
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
 }
-.reveal.is-visible { opacity: 1; transform: none; }
+.footer-links a {
+  display: inline-block;
+  padding: 4px 0;
+  color: var(--muted);
+  font-size: .9rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.footer-links a:hover, .footer-links a[aria-current="page"] { color: var(--text); }
+
+/* ---------- Legal pages ---------- */
+.legal { padding: clamp(48px, 8vw, 88px) 0 clamp(64px, 10vw, 112px); }
+.legal .container { max-width: 800px; }
+.legal h1 { font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 700; }
+.legal h2 { font-size: 1.4rem; margin-top: 2.2em; }
+.legal h3 { font-size: 1.1rem; margin-top: 1.6em; }
+.legal p, .legal li { color: #C9D6EE; }
+.legal ul { padding-left: 1.3em; margin: 0 0 1em; }
+.legal li { margin-bottom: .4em; }
+.legal a { text-decoration: underline; text-underline-offset: 3px; }
+.legal .updated { color: var(--muted); font-size: .95rem; }
+.legal .callout {
+  margin: 28px 0;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-2);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.legal .callout p:last-child { margin-bottom: 0; }
+
+/* ---------- Reveal ----------
+   Scroll-driven CSS animation: content is visible by default and only fades in
+   where the browser supports it and the visitor hasn't asked for reduced motion. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media print {
+  .reveal { animation: none; }
+}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
@@ -591,5 +683,10 @@ p { margin: 0 0 1em; }
     animation-delay: 0s !important;
     transition-duration: .01ms !important;
   }
-  .reveal { opacity: 1; transform: none; }
+}
+
+@media (forced-colors: active) {
+  .btn { border: 1px solid ButtonText; }
+  .field input, .field textarea { border: 1px solid FieldText; }
+  .card, .about-points li, .contact-form { border: 1px solid CanvasText; }
 }

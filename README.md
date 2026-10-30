@@ -6,11 +6,26 @@ Single-page site: plain HTML/CSS/JS, no build step. Deployed to GitHub Pages by 
 
 ```
 index.html
+privacy.html          # Privacy Policy
+terms.html            # Terms of Use
+accessibility.html    # Accessibility Statement
 css/styles.css
 js/config.js     # placeholders only, filled in at deploy time from GitHub secrets
 js/main.js       # nav, scroll reveal, contact form (EmailJS + reCAPTCHA)
 assets/          # logo-full.png is the original; others are crops/favicons generated from it
+assets/fonts/    # self-hosted Exo 2 and Inter (SIL Open Font License), latin subset
 ```
+
+## Compliance notes
+- **Accessibility:** built to WCAG 2.2 AA (contrast checked, labeled fields with text errors,
+  keyboard and screen reader friendly, reduced motion, forced-colors support). The statement
+  is in `accessibility.html`; update its "Last reviewed" date when you re-check the site.
+- **Privacy:** no analytics or site cookies. Fonts are self-hosted so no Google Fonts requests.
+  reCAPTCHA only loads once a visitor focuses the contact form. If you ever add analytics, a
+  new third-party service, or a newsletter, update `privacy.html` (and you may need a consent banner).
+- **Legal review:** the Privacy Policy and Terms of Use are solid starting points written for this
+  site, but they aren't legal advice. Have a Michigan attorney review them, especially the
+  liability cap and venue clauses in `terms.html`.
 
 ## Run locally
 
@@ -57,7 +72,7 @@ Note: the EmailJS public key and reCAPTCHA site key end up visible in the deploy
 - EmailJS allowed origins and rate limit (dashboard settings)
 
 ## TODO once the domain is purchased
-- [ ] Replace `hello@mittentechnology.com` in `index.html` and `js/config.js` with the real address
+- [ ] Replace `hello@mittentechnology.com` everywhere it appears (`index.html`, `privacy.html`, `terms.html`, `accessibility.html`, `js/config.js`) with the real address
 - [ ] Add a `CNAME` file with the domain and set the custom domain in Pages settings
 - [ ] Make `og:image` an absolute URL (`https://yourdomain/assets/og-image.jpg`) so link previews work
 - [ ] Add the domain to the reCAPTCHA and EmailJS allowed origins

@@ -21,7 +21,6 @@
       return;
     }
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     header.classList.toggle('nav-open', open);
   }
 
@@ -32,6 +31,12 @@
     navLinks.addEventListener('click', function (e) {
       if (e.target.closest('a')) {
         setNavOpen(false);
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setNavOpen(false);
+        toggle.focus();
       }
     });
   }
@@ -45,23 +50,6 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // ---- Scroll reveal ----
-  var reveals = document.querySelectorAll('.reveal');
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!('IntersectionObserver' in window) || reduceMotion) {
-    reveals.forEach(function (el) { el.classList.add('is-visible'); });
-  } else {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { rootMargin: '0px 0px -60px 0px', threshold: 0.1 });
-    reveals.forEach(function (el) { observer.observe(el); });
-  }
-
   // ---- Contact form ----
   var form = document.getElementById('contact-form');
   if (!form) {
@@ -71,6 +59,7 @@
   var submitBtn = form.querySelector('button[type="submit"]');
   var captchaEl = document.getElementById('captcha');
   var captchaWidgetId = null;
+  var captchaRequested = false;
 
   function isPlaceholder(value) {
     return !value || /^__.+__$/.test(value);
@@ -124,7 +113,7 @@
     });
   }
 
-  // reCAPTCHA loads explicitly so we can render it into #captcha with the configured key.
+  // reCAPTCHA (and the cookies Google sets with it) only loads once someone starts using the form.
   window.mittenRecaptchaReady = function () {
     try {
       captchaWidgetId = window.grecaptcha.render(captchaEl, {
@@ -139,31 +128,52 @@
       });
     }
   };
-  var recaptchaScript = document.createElement('script');
-  recaptchaScript.src = 'https://www.google.com/recaptcha/api.js?onload=mittenRecaptchaReady&render=explicit';
-  recaptchaScript.async = true;
-  recaptchaScript.defer = true;
-  recaptchaScript.onerror = function () {
-    console.error('ContactForm@init: reCAPTCHA script failed to load', { src: recaptchaScript.src });
-  };
-  document.head.appendChild(recaptchaScript);
+
+  function loadRecaptcha() {
+    if (captchaRequested) {
+      return;
+    }
+    captchaRequested = true;
+    var script = document.createElement('script');
+    script.src = 'https://www.google.com/recaptcha/api.js?onload=mittenRecaptchaReady&render=explicit';
+    script.async = true;
+    script.defer = true;
+    script.onerror = function () {
+      console.error('ContactForm@loadRecaptcha: reCAPTCHA script failed to load', { src: script.src });
+      showMailtoFallback('Sorry, the form is unavailable right now.');
+    };
+    document.head.appendChild(script);
+  }
+  form.addEventListener('focusin', loadRecaptcha);
+
+  function setFieldError(input, hasError) {
+    var errorEl = document.getElementById(input.id + '-error');
+    input.setAttribute('aria-invalid', String(hasError));
+    input.closest('.field').classList.toggle('has-error', hasError);
+    if (errorEl) {
+      errorEl.hidden = !hasError;
+    }
+  }
 
   function validate() {
-    var valid = true;
+    var firstInvalid = null;
     form.querySelectorAll('[required]').forEach(function (input) {
       var ok = input.checkValidity() && input.value.trim() !== '';
-      input.closest('.field').classList.toggle('has-error', !ok);
-      if (!ok) {
-        valid = false;
+      setFieldError(input, !ok);
+      if (!ok && !firstInvalid) {
+        firstInvalid = input;
       }
     });
-    return valid;
+    if (firstInvalid) {
+      firstInvalid.focus();
+    }
+    return !firstInvalid;
   }
 
   form.addEventListener('input', function (e) {
-    var field = e.target.closest('.field');
-    if (field && field.classList.contains('has-error') && e.target.checkValidity()) {
-      field.classList.remove('has-error');
+    var input = e.target;
+    if (input.getAttribute('aria-invalid') === 'true' && input.checkValidity() && input.value.trim() !== '') {
+      setFieldError(input, false);
     }
   });
 
@@ -197,7 +207,7 @@
     }
 
     if (!validate()) {
-      setStatus('Please fill in the highlighted fields.', 'error');
+      setStatus('Some fields need attention. Please check the messages above.', 'error');
       return;
     }
 
@@ -206,7 +216,7 @@
       captchaResponse = window.grecaptcha.getResponse(captchaWidgetId);
     }
     if (!captchaResponse) {
-      setStatus('Please check the "I\'m not a robot" box.', 'error');
+      setStatus('Please complete the "I\'m not a robot" check above the Send button.', 'error');
       return;
     }
 
@@ -218,7 +228,7 @@
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending...';
-    setStatus('', '');
+    setStatus('Sending your message...', '');
 
     // sendForm picks up the g-recaptcha-response field reCAPTCHA adds to the form;
     // EmailJS verifies it server-side when reCAPTCHA is enabled on the template.

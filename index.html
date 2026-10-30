@@ -16,9 +16,8 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/exo2-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -26,12 +25,12 @@
 
   <header class="site-header" id="top">
     <div class="container nav">
-      <a class="brand" href="#top" aria-label="Mitten Technology home">
+      <a class="brand" href="#top">
         <img src="assets/logo-mark.webp" alt="" width="40" height="31">
-        <span class="brand-text">Mitten<span>Technology</span></span>
+        <span class="brand-text">Mitten <span>Technology</span></span>
       </a>
-      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
-        <span></span><span></span><span></span>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+        <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
       </button>
       <nav id="nav-links" class="nav-links" aria-label="Primary">
         <a href="#services">Services</a>
@@ -41,15 +40,16 @@
     </div>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
     <section class="hero">
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="container hero-inner">
-        <h1 class="visually-hidden">Mitten Technology</h1>
-        <img class="hero-logo" src="assets/logo-lockup.webp" alt="Mitten Technology" width="1209" height="273">
-        <div class="tagline" aria-label="Software engineering, modernization, technology consulting">
-          <span>Software Engineering</span><i></i><span>Modernization</span><i></i><span>Technology Consulting</span>
-        </div>
+        <h1 class="hero-title">
+          <img class="hero-logo" src="assets/logo-lockup.webp" alt="Mitten Technology" width="1209" height="273">
+        </h1>
+        <p class="tagline">
+          <span>Software Engineering</span><i aria-hidden="true"></i><span>Modernization</span><i aria-hidden="true"></i><span>Technology Consulting</span>
+        </p>
         <p class="hero-lead">Software built to last, from right here in Michigan.</p>
         <p class="hero-sub">We build, fix, and modernize the systems your business runs on. You'll talk to the engineer doing the work, not an account manager.</p>
         <div class="hero-cta">
@@ -59,18 +59,18 @@
       </div>
     </section>
 
-    <section id="services" class="section">
+    <section id="services" class="section" aria-labelledby="services-heading">
       <div class="container">
         <header class="section-head reveal">
           <p class="eyebrow">Services</p>
-          <h2>What we do</h2>
+          <h2 id="services-heading">What we do</h2>
           <p>Practical engineering for businesses that need their software to work, and keep working.</p>
         </header>
 
         <div class="cards">
           <article class="card reveal">
             <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16"/></svg>
+              <svg viewBox="0 0 24 24" focusable="false"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16"/></svg>
             </div>
             <h3>Software Engineering</h3>
             <p>Custom web applications and back-end systems, designed around how your team actually works.</p>
@@ -83,7 +83,7 @@
 
           <article class="card reveal">
             <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7"/></svg>
+              <svg viewBox="0 0 24 24" focusable="false"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7"/></svg>
             </div>
             <h3>Modernization</h3>
             <p>Older systems still running the business? We upgrade them step by step, without shutting anything down.</p>
@@ -96,7 +96,7 @@
 
           <article class="card reveal">
             <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4zM8 9.5h8M8 12.5h5"/></svg>
+              <svg viewBox="0 0 24 24" focusable="false"><path d="M4 5h16v11H8l-4 4zM8 9.5h8M8 12.5h5"/></svg>
             </div>
             <h3>Technology Consulting</h3>
             <p>A straight answer on what to build, buy, or leave alone, from someone with no software to sell you.</p>
@@ -109,7 +109,7 @@
 
           <article class="card reveal">
             <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 5h16v4H4zM4 11h7v8H4zM13 11h7v8h-7z"/></svg>
+              <svg viewBox="0 0 24 24" focusable="false"><path d="M4 5h16v4H4zM4 11h7v8H4zM13 11h7v8h-7z"/></svg>
             </div>
             <h3>CRMs &amp; Business Systems</h3>
             <p>Custom CRMs and internal tools that fit your process, instead of bending your process to fit the software.</p>
@@ -131,17 +131,17 @@
         </header>
         <div class="fit-grid">
           <div class="fit reveal">
-            <span class="fit-num">01</span>
+            <span class="fit-num" aria-hidden="true">01</span>
             <h3>Running on aging software</h3>
             <p>It works, mostly. But it's getting harder to change, and the person who built it moved on years ago.</p>
           </div>
           <div class="fit reveal">
-            <span class="fit-num">02</span>
+            <span class="fit-num" aria-hidden="true">02</span>
             <h3>A business without a dev team</h3>
             <p>You need a dependable engineer you can call, without hiring a full department.</p>
           </div>
           <div class="fit reveal">
-            <span class="fit-num">03</span>
+            <span class="fit-num" aria-hidden="true">03</span>
             <h3>A startup with an idea to build</h3>
             <p>You need someone to help shape the plan and then actually ship it.</p>
           </div>
@@ -149,11 +149,11 @@
       </div>
     </section>
 
-    <section id="about" class="section">
+    <section id="about" class="section" aria-labelledby="about-heading">
       <div class="container about">
         <div class="about-copy reveal">
           <p class="eyebrow">About</p>
-          <h2>Built on long-term relationships</h2>
+          <h2 id="about-heading">Built on long-term relationships</h2>
           <p>Mitten Technology started in Grand Blanc for a simple reason: clients we'd supported for years still needed us, and we weren't willing to walk away from them.</p>
           <p>That's still how we work. We take on a small number of clients and stick around. We write code the next developer can read, we tell you plainly what something will cost and how long it will take, and we pick up the phone when you call.</p>
           <p>Now we're ready to take on a few more businesses that want that kind of partner. If that sounds like you, we'd like to hear what you're working on.</p>
@@ -179,16 +179,16 @@
       </div>
     </section>
 
-    <section id="contact" class="section section-alt">
+    <section id="contact" class="section section-alt" aria-labelledby="contact-heading">
       <div class="container contact">
         <div class="contact-info reveal">
           <p class="eyebrow">Contact</p>
-          <h2>Let's talk about your project</h2>
+          <h2 id="contact-heading">Let's talk about your project</h2>
           <p>Tell us a bit about what you need. We'll get back to you within one business day.</p>
           <dl class="contact-details">
             <div>
               <dt>Email</dt>
-              <dd><a href="mailto:hello@mittentechnology.com" data-contact-email>hello@mittentechnology.com</a></dd>
+              <dd><a href="mailto:hello@mittentechnology.com">hello@mittentechnology.com</a></dd>
             </div>
             <div>
               <dt>Location</dt>
@@ -197,35 +197,50 @@
           </dl>
         </div>
 
-        <form class="contact-form reveal" id="contact-form" novalidate>
+        <form class="contact-form reveal" id="contact-form" aria-labelledby="contact-heading" novalidate>
+          <p class="form-note">All fields are required unless marked optional.</p>
           <div class="field-row">
-            <label class="field">
-              <span>Name</span>
-              <input type="text" name="from_name" autocomplete="name" required maxlength="100">
-            </label>
-            <label class="field">
-              <span>Email</span>
-              <input type="email" name="reply_to" autocomplete="email" required maxlength="150">
-            </label>
+            <div class="field">
+              <label for="cf-name">Name</label>
+              <input id="cf-name" type="text" name="from_name" autocomplete="name" required maxlength="100" aria-describedby="cf-name-error">
+              <p class="field-error" id="cf-name-error" hidden>Please enter your name.</p>
+            </div>
+            <div class="field">
+              <label for="cf-email">Email</label>
+              <input id="cf-email" type="email" name="reply_to" autocomplete="email" required maxlength="150" aria-describedby="cf-email-error">
+              <p class="field-error" id="cf-email-error" hidden>Please enter a valid email address, like name@example.com.</p>
+            </div>
           </div>
-          <label class="field">
-            <span>Company <em>(optional)</em></span>
-            <input type="text" name="company" autocomplete="organization" maxlength="150">
-          </label>
-          <label class="field">
-            <span>How can we help?</span>
-            <textarea name="message" rows="5" required maxlength="4000"></textarea>
-          </label>
+          <div class="field">
+            <label for="cf-company">Company <span class="optional">(optional)</span></label>
+            <input id="cf-company" type="text" name="company" autocomplete="organization" maxlength="150">
+          </div>
+          <div class="field">
+            <label for="cf-message">How can we help?</label>
+            <textarea id="cf-message" name="message" rows="5" required maxlength="4000" aria-describedby="cf-message-error"></textarea>
+            <p class="field-error" id="cf-message-error" hidden>Please tell us a little about what you need.</p>
+          </div>
 
-          <!-- Honeypot: hidden from people, bots tend to fill it -->
+          <!-- Honeypot: hidden from people and assistive tech, bots tend to fill it -->
           <div class="hp" aria-hidden="true">
-            <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+            <label for="cf-website">Website</label>
+            <input id="cf-website" type="text" name="website" tabindex="-1" autocomplete="off">
           </div>
 
           <div class="captcha" id="captcha"></div>
 
           <button type="submit" class="btn btn-full">Send message</button>
           <p class="form-status" role="status" aria-live="polite"></p>
+
+          <p class="form-legal">
+            We only use what you send to reply to you. See our <a href="privacy.html">Privacy Policy</a>.
+            This form is protected by reCAPTCHA, and the Google
+            <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Privacy Policy<span class="visually-hidden"> (opens in a new tab)</span></a> and
+            <a href="https://policies.google.com/terms" rel="noopener" target="_blank">Terms of Service<span class="visually-hidden"> (opens in a new tab)</span></a> apply.
+          </p>
+          <noscript>
+            <p class="form-status is-error">The contact form needs JavaScript. You can email us at <a href="mailto:hello@mittentechnology.com">hello@mittentechnology.com</a>.</p>
+          </noscript>
         </form>
       </div>
     </section>
@@ -233,11 +248,16 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <a class="brand" href="#top" aria-label="Back to top">
+      <a class="brand" href="#top">
         <img src="assets/logo-mark.webp" alt="" width="32" height="25">
-        <span class="brand-text">Mitten<span>Technology</span></span>
+        <span class="brand-text">Mitten <span>Technology</span></span>
       </a>
-      <p>&copy; <span id="year">2026</span> Mitten Technology &middot; Grand Blanc, Michigan</p>
+      <nav class="footer-links" aria-label="Legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="accessibility.html">Accessibility</a>
+      </nav>
+      <p class="copyright">&copy; <span id="year">2026</span> Mitten Technology LLC &middot; Grand Blanc, Michigan</p>
     </div>
   </footer>
 
