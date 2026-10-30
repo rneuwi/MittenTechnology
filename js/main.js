@@ -69,7 +69,7 @@
     !isPlaceholder(config.emailjsServiceId) &&
     !isPlaceholder(config.emailjsTemplateId);
   var captchaConfigured = !isPlaceholder(config.recaptchaSiteKey);
-  var contactEmail = config.contactEmail || 'hello@mittentechnologyllc.com';
+  var contactEmail = config.contactEmail || 'rneuwirth@mittentechnologyllc.com';
 
   function setStatus(message, type) {
     if (!statusEl) {

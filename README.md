@@ -77,5 +77,5 @@ Because the site deploys through GitHub Actions, a `CNAME` file isn't used; the 
 - [ ] Settings > Pages > Custom domain: `mittentechnologyllc.com`, then check **Enforce HTTPS** once the certificate is issued
 - [ ] DNS at the registrar: `A` records for `@` pointing to `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`, and a `CNAME` for `www` pointing to `<your-username>.github.io`
 - [ ] (Recommended) Verify the domain under your GitHub account's Settings > Pages to prevent takeover
-- [ ] Set up the `hello@mittentechnologyllc.com` mailbox (or forwarding) with your email provider, including its MX records
+- [x] Set up the `rneuwirth@mittentechnologyllc.com` mailbox in Google Workspace
 - [ ] Add the domain to the reCAPTCHA domains and EmailJS allowed origins
