@@ -88,6 +88,53 @@
     });
   }
 
+  // ---- In-page links: scroll without putting #name in the URL ----
+  // The hrefs stay as #name so links still work if this script fails to load.
+  function clearHash() {
+    if (window.location.hash && window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }
+
+  function focusTarget(target) {
+    if (!target.hasAttribute('tabindex') && !target.matches('a[href], button, input, select, textarea')) {
+      target.setAttribute('tabindex', '-1');
+    }
+    target.focus({ preventScroll: true });
+  }
+
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+      return;
+    }
+    var link = e.target.closest('a[href^="#"]');
+    if (!link) {
+      return;
+    }
+    var id = link.getAttribute('href').slice(1);
+
+    if (id === '' || id === 'top') {
+      e.preventDefault();
+      window.scrollTo({ top: 0 });
+      clearHash();
+      return;
+    }
+
+    var target = document.getElementById(id);
+    if (!target) {
+      console.warn('main.js@inPageLink: link points to a missing element', { href: link.getAttribute('href') });
+      return;
+    }
+    e.preventDefault();
+    target.scrollIntoView();
+    focusTarget(target);
+    clearHash();
+  });
+
+  // Arriving from another page (e.g. index.html#contact): the browser has
+  // scrolled to the section by the time the page loads, so just tidy the URL.
+  window.addEventListener('load', clearHash);
+
   // ---- Header shadow on scroll ----
   function onScroll() {
     if (header) {
